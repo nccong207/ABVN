@@ -42,20 +42,21 @@ namespace TrungSoBG
                 return;
             if (!drMaster.Table.Columns.Contains("SoCT"))
                 return;
+            if (!string.IsNullOrEmpty(drMaster["SoCT"].ToString()))
+                return;
 
-            string namlamviec = DateTime.Now.ToString("yy");
-            string thang = DateTime.Now.ToString("MM");
-            
 
-            string l_SoCT = drMaster["SoCT"].ToString();
-            //  string l_SoCT = "12.08.275";
-            //string sql = @" SELECT	top 1 SoCT FROM	MT63 WHERE	SoCT='" + l_SoCT + "' ORDER BY SoCT DESC";
+            string namlamviec = "", thang = "";
+
+            if (!string.IsNullOrEmpty(drMaster["NgayCT"].ToString())) {
+                namlamviec = ((DateTime)drMaster["NgayCT"]).ToString("yy");
+                thang = ((DateTime)drMaster["NgayCT"]).ToString("MM");
+            }
 
             string sql = string.Format("SELECT max(SoCT) as SoCT FROM MT63 WHERE SoCT LIKE '{0}.{1}%'", namlamviec, thang);
           
             DataTable dt = _data.DbData.GetDataTable(sql);
             String SoCT = "";
-                //!string.IsNullOrEmpty(l_SoCT) ? l_SoCT : "001";
 
             if (dt.Rows.Count > 0)
             {
