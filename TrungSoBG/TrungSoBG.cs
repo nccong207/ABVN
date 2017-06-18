@@ -42,9 +42,6 @@ namespace TrungSoBG
                 return;
             if (!drMaster.Table.Columns.Contains("SoCT"))
                 return;
-            if (!string.IsNullOrEmpty(drMaster["SoCT"].ToString()))
-                return;
-
 
             string namlamviec = "", thang = "";
 
