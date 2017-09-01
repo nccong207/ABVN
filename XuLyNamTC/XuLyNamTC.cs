@@ -42,19 +42,27 @@ namespace XuLyNamTC
 
             if (!deNgayCT.Properties.ReadOnly)
             {
-                var current = (DateTime)deNgayCT.EditValue;
+                if (deNgayCT.EditValue == null)
+                {
+                    return;
+                }
+
+                var current = DateTime.ParseExact(deNgayCT.EditValue.ToString(), "MM/dd/yyyy hh:mm:ss", null);
 
                 if (Config.GetValue("NamLamViec") != null)
                 {
                     int year = int.Parse(Config.GetValue("NamLamViec").ToString());
-                    if (year != current.Year)
+                    int month = int.Parse(Config.GetValue("KyKeToan").ToString());
+
+                    if (year != current.Year || month != current.Month)
                     {
-                        XtraMessageBox.Show("Bạn đang nhập số liệu không thuộc năm tài chính hiện tại. \nVui lòng kiểm tra lại.", Config.GetValue("PackageName").ToString());
+                        XtraMessageBox.Show("Bạn đang nhập số liệu không thuộc năm tài chính hoặc kỳ kế toán hiện tại. \nVui lòng kiểm tra lại.", Config.GetValue("PackageName").ToString());
                         DataRow drMaster = (_data.BsMain.Current as DataRowView).Row;
                         isClear = true;
                         drMaster["NgayCT"] = DBNull.Value;
                     }
                 }
+
             }
         }
     }
