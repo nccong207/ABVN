@@ -32,15 +32,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CDTDatabase">
-      <HintPath>..\..\..\Code\PhucHao\UpdateUser\bin\Debug\CDTDatabase.dll</HintPath>
+      <HintPath>..\CDTDebug\bin\Debug\CDTDatabase.dll</HintPath>
     </Reference>
     <Reference Include="CDTLib">
-      <HintPath>..\..\..\CDTLibaries\CDTLib.dll</HintPath>
+      <HintPath>..\CDTDebug\bin\Debug\CDTLib.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v7.2, Version=7.2.5.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
     <Reference Include="DevExpress.XtraEditors.v7.2, Version=7.2.5.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
     <Reference Include="Plugins">
-      <HintPath>..\..\..\CDTLibaries\Plugins.dll</HintPath>
+      <HintPath>..\CDTDebug\bin\Debug\Plugins.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
