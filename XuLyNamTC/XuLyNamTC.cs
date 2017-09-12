@@ -11,7 +11,6 @@ namespace XuLyNamTC
     public class XuLyNamTC : ICControl
     {
         DateEdit deNgayCT;
-        bool isClear = false;
         private DataCustomFormControl _data;
         private InfoCustomControl _info = new InfoCustomControl(IDataType.MasterDetailDt);
         public DataCustomFormControl Data
@@ -30,15 +29,8 @@ namespace XuLyNamTC
             deNgayCT.EditValueChanged += DeNgayCT_EditValueChanged;
         }
 
-       
-
         private void DeNgayCT_EditValueChanged(object sender, EventArgs e)
         {
-            if (isClear)
-            {
-                isClear = false;
-                return;
-            }
 
             if (!deNgayCT.Properties.ReadOnly)
             {
@@ -57,9 +49,7 @@ namespace XuLyNamTC
                     if (year != current.Year || month != current.Month)
                     {
                         XtraMessageBox.Show("Bạn đang nhập số liệu không thuộc năm tài chính hoặc kỳ kế toán hiện tại. \nVui lòng kiểm tra lại.", Config.GetValue("PackageName").ToString());
-                        DataRow drMaster = (_data.BsMain.Current as DataRowView).Row;
-                        isClear = true;
-                        drMaster["NgayCT"] = DBNull.Value;
+                        return;
                     }
                 }
 
