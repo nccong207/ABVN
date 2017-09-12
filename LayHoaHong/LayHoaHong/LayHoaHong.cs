@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using CDTDatabase;
@@ -8,13 +8,6 @@ using CBSControls;
 using FormFactory;
 using DevExpress.XtraEditors;
 using System.Data;
-using DevExpress.XtraLayout;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.Grid;
-using System.Windows.Forms;
-using CDTControl;
-using System.IO;
-using System.Diagnostics;
 
 namespace LayHoaHong
 {
@@ -24,68 +17,17 @@ namespace LayHoaHong
         Database db = Database.NewDataDatabase();
         InfoCustomControl info = new InfoCustomControl(IDataType.MasterDetailDt);
         DataCustomFormControl data;
-        GridView gvMain;
+
         #region ICControl Members
 
         CheckEdit ckHoaHong;
         CalcEdit calTienHH;
         public void AddEvent()
         {
-            gvMain = (data.FrmMain.Controls.Find("gcMain", true)[0] as GridControl).MainView as GridView;
             ckHoaHong = data.FrmMain.Controls.Find("DaChiHH",true) [0] as CheckEdit;
             ckHoaHong.EditValueChanged += new EventHandler(ckHoaHong_EditValueChanged);
             calTienHH = data.FrmMain.Controls.Find("DaChi", true)[0] as CalcEdit ;
-            LayoutControl lcMain = data.FrmMain.Controls.Find("lcMain", true)[0] as LayoutControl;
-
-            SimpleButton btnXuatFile = new SimpleButton();
-            btnXuatFile.Text = "Xuất ra Excel";
-            btnXuatFile.Name = "btnXuatFile";
-            btnXuatFile.Click += new EventHandler(btnXuatFile_Click);
-            LayoutControlItem lci2 = lcMain.AddItem("", btnXuatFile);
-            lci2.Name = "cusXuatFile";
-        }
-
-        private void btnXuatFile_Click(object sender, EventArgs e)
-        {
-            if (gvMain.Editable)
-            {
-                XtraMessageBox.Show("Vui lòng thực hiện khi đã lưu hóa đơn bán hàng",
-                    Config.GetValue("PackageName").ToString());
-                return;
-            }
-
-            DataRow drCurrent = (data.BsMain.Current as DataRowView).Row;
-
-            if (bool.Parse(drCurrent["Duyet"].ToString()))
-            {
-                XtraMessageBox.Show("Chỉ xuất file Excel đối với đơn hàng đã duyệt.",
-                    Config.GetValue("PackageName").ToString());
-                return;
-            }
-
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.RestoreDirectory = true;
-            sfd.Filter = "Excel files (*.xls)|*.xls";
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                string sql = @"SELECT top 200 m.SoHoaDon, m.NgayCT, kh.NLH1, m.TenKH, m.DiaChi, kh.MST, m.HanTT, d.TenVT,
-                            CONVERT(varchar(50), CAST(d.Dai AS INT), 0)  + ' + ' + CONVERT(varchar(50), CAST(d.Rong AS INT), 0) + ' + ' + CONVERT(varchar(50), CAST(d.Day AS INT), 0) as [kichthuoc],
-                             dvt.TenDVT, d.SoLuong, d.Gia, d.PS, th.ThueSuat, (d.PS * th.ThueSuat)/100 as TienThue, (d.PS * (th.ThueSuat + 100))/100 as TongTien
-                            FROM MT32 m JOIN DT32 d ON m.MT32ID = d.MT32ID	
-                            LEFT JOIN DMKH kh ON m.MaKH = kh.MaKH and kh.IsKH = 1
-                            LEFT JOIN DMDVT dvt ON d.MaDVT = dvt.MaDVT
-                            LEFT JOIN DMThueSuat th ON m.MaThue = th.MaThue
-                            WHERE m.MT32ID = '{0}' ORDER BY d.Stt";
-                Database db = Database.NewDataDatabase();
-               
-                DataTable dtData = db.GetDataTable(string.Format(sql, drCurrent["MT32ID"]));
-                string f = Application.StartupPath + "\\Reports\\HTA\\MauHoaDon.xls";
-
-                ExportExcel exportExcel = new ExportExcel(f, sfd.FileName, dtData);
-                if (exportExcel.Export() && File.Exists(sfd.FileName))
-                    Process.Start(sfd.FileName);
-            }
+            
         }
 
         void ckHoaHong_EditValueChanged(object sender, EventArgs e)
