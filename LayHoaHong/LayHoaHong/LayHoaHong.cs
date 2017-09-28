@@ -69,13 +69,15 @@ namespace LayHoaHong
             sfd.Filter = "Excel files (*.xls)|*.xls";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                string sql = @"SELECT top 200 m.SoHoaDon, m.NgayCT, kh.NLH1, m.TenKH, m.DiaChi, kh.MST, m.HanTT, d.TenVT,
-                            CONVERT(varchar(50), CAST(d.Dai AS INT), 0)  + ' + ' + CONVERT(varchar(50), CAST(d.Rong AS INT), 0) + ' + ' + CONVERT(varchar(50), CAST(d.Day AS INT), 0) as [kichthuoc],
-                             dvt.TenDVT, d.SoLuong, d.Gia, d.PS, th.ThueSuat, ROUND((d.PS * th.ThueSuat)/100, 0) as TienThue, ROUND((d.PS * (th.ThueSuat + 100))/100, 0) as TongTien, kh.Email
-                            FROM MT32 m JOIN DT32 d ON m.MT32ID = d.MT32ID	
-                            LEFT JOIN DMKH kh ON m.MaKH = kh.MaKH
-                            LEFT JOIN DMDVT dvt ON d.MaDVT = dvt.MaDVT
-                            LEFT JOIN DMThueSuat th ON m.MaThue = th.MaThue
+                string sql = @"SELECT top 200 m.SoHoaDon, m.NgayCT, kh.NLH1, m.TenKH, m.DiaChi, kh.MST, d.TenVT,
+                                d.Dai, d.Rong, d.Day,
+                                dvt.TenDVT, d.SoLuong, d.Gia, d.PS, th.ThueSuat, 
+                                ROUND((d.PS * th.ThueSuat)/100, 0) as TienThue, ROUND((d.PS * (th.ThueSuat + 100))/100, 0) as TongTien, kh.EmailLH,
+                                m.MaKH, m.SoSO, m.So_PGH, d.SoPO
+                                FROM MT32 m JOIN DT32 d ON m.MT32ID = d.MT32ID	
+                                LEFT JOIN DMKH kh ON m.MaKH = kh.MaKH
+                                LEFT JOIN DMDVT dvt ON d.MaDVT = dvt.MaDVT
+                                LEFT JOIN DMThueSuat th ON m.MaThue = th.MaThue
                             WHERE m.MT32ID = '{0}' ORDER BY d.Stt";
                 Database db = Database.NewDataDatabase();
                
