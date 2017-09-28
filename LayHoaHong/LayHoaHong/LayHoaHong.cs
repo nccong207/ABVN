@@ -56,24 +56,24 @@ namespace LayHoaHong
 
             DataRow drCurrent = (data.BsMain.Current as DataRowView).Row;
 
-            if (bool.Parse(drCurrent["Duyet"].ToString()))
+            if (!bool.Parse(drCurrent["Duyet"].ToString()))
             {
-                XtraMessageBox.Show("Chỉ xuất file Excel đối với đơn hàng đã duyệt.",
+                XtraMessageBox.Show("Chỉ xuất file Excel đối với hóa đơn đã duyệt.",
                     Config.GetValue("PackageName").ToString());
                 return;
             }
 
-
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.RestoreDirectory = true;
+            sfd.FileName = drCurrent["SoHoaDon"].ToString();
             sfd.Filter = "Excel files (*.xls)|*.xls";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 string sql = @"SELECT top 200 m.SoHoaDon, m.NgayCT, kh.NLH1, m.TenKH, m.DiaChi, kh.MST, m.HanTT, d.TenVT,
                             CONVERT(varchar(50), CAST(d.Dai AS INT), 0)  + ' + ' + CONVERT(varchar(50), CAST(d.Rong AS INT), 0) + ' + ' + CONVERT(varchar(50), CAST(d.Day AS INT), 0) as [kichthuoc],
-                             dvt.TenDVT, d.SoLuong, d.Gia, d.PS, th.ThueSuat, (d.PS * th.ThueSuat)/100 as TienThue, (d.PS * (th.ThueSuat + 100))/100 as TongTien
+                             dvt.TenDVT, d.SoLuong, d.Gia, d.PS, th.ThueSuat, ROUND((d.PS * th.ThueSuat)/100, 0) as TienThue, ROUND((d.PS * (th.ThueSuat + 100))/100, 0) as TongTien, kh.Email
                             FROM MT32 m JOIN DT32 d ON m.MT32ID = d.MT32ID	
-                            LEFT JOIN DMKH kh ON m.MaKH = kh.MaKH and kh.IsKH = 1
+                            LEFT JOIN DMKH kh ON m.MaKH = kh.MaKH
                             LEFT JOIN DMDVT dvt ON d.MaDVT = dvt.MaDVT
                             LEFT JOIN DMThueSuat th ON m.MaThue = th.MaThue
                             WHERE m.MT32ID = '{0}' ORDER BY d.Stt";
