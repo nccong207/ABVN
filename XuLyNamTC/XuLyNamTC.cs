@@ -11,8 +11,10 @@ namespace XuLyNamTC
     public class XuLyNamTC : ICControl
     {
         DateEdit deNgayCT;
+        
         private DataCustomFormControl _data;
         private InfoCustomControl _info = new InfoCustomControl(IDataType.MasterDetailDt);
+        bool isShown = false;
         public DataCustomFormControl Data
         {
             set { _data = value; }
@@ -26,11 +28,28 @@ namespace XuLyNamTC
         public void AddEvent()
         {
             deNgayCT = _data.FrmMain.Controls.Find("NgayCT", true)[0] as DateEdit;
+            //deNgayCT.EditValue = DateTime.Now;
+            _data.FrmMain.Shown += FrmMain_Shown;
+            _data.FrmMain.FormClosed += FrmMain_FormClosed;
             deNgayCT.EditValueChanged += DeNgayCT_EditValueChanged;
+        }
+
+        private void FrmMain_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        {
+            isShown = false;
+        }
+
+        private void FrmMain_Shown(object sender, EventArgs e)
+        {
+            isShown = true;
         }
 
         private void DeNgayCT_EditValueChanged(object sender, EventArgs e)
         {
+            if (!isShown)
+            {
+                return;
+            }
 
             if (!deNgayCT.Properties.ReadOnly)
             {
