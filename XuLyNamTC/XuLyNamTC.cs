@@ -42,6 +42,7 @@ namespace XuLyNamTC
         private void FrmMain_Shown(object sender, EventArgs e)
         {
             isShown = true;
+            DeNgayCT_EditValueChanged(deNgayCT, new EventArgs());
         }
 
         private void DeNgayCT_EditValueChanged(object sender, EventArgs e)
