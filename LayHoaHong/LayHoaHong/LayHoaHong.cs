@@ -56,12 +56,12 @@ namespace LayHoaHong
 
             DataRow drCurrent = (data.BsMain.Current as DataRowView).Row;
 
-            if (!bool.Parse(drCurrent["Duyet"].ToString()))
-            {
-                XtraMessageBox.Show("Chỉ xuất file Excel đối với hóa đơn đã duyệt.",
-                    Config.GetValue("PackageName").ToString());
-                return;
-            }
+            //if (!bool.Parse(drCurrent["Duyet"].ToString()))
+            //{
+            //    XtraMessageBox.Show("Chỉ xuất file Excel đối với hóa đơn đã duyệt.",
+            //        Config.GetValue("PackageName").ToString());
+            //    return;
+            //}
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.RestoreDirectory = true;
