@@ -69,7 +69,7 @@ namespace LayHoaHong
             sfd.Filter = "Excel files (*.xls)|*.xls";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                string sql = @"SELECT m.SoHoaDon, m.NgayCT, m.OngBa, m.TenKH, m.DiaChi, kh.MST, d.TenVT,
+                string sql = @"SELECT m.SoHoaDon, m.NgayCT, m.OngBa, m.TenKH, m.DiaChi, MST = '''' + kh.MST, d.TenVT,
                                 d.Dai, d.Rong, d.Day,
                                 dvt.TenDVT, d.SoLuong, d.Gia, d.PS, th.ThueSuat, 
                                 ROUND((d.PS * th.ThueSuat)/100, 0) as TienThue, ROUND((d.PS * (th.ThueSuat + 100))/100, 0) as TongTien, kh.Email,
