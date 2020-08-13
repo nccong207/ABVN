@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Plugins;
 using CDTDatabase;
 using CDTLib;
 using System.Data;
+using DevExpress.XtraEditors;
 
 namespace DeNghiGiaoHang
 {
@@ -39,9 +40,20 @@ namespace DeNghiGiaoHang
              //soct=  drPhieuDeNghi["SoBG"].ToString();
             if (drPhieuDeNghi.RowState == DataRowState.Added)
             {
-                if (!string.IsNullOrEmpty(drPhieuDeNghi["SoBG"].ToString()))
+                var sobg = drPhieuDeNghi["SoBG"].ToString();
+
+                if (!string.IsNullOrEmpty(sobg))
                 {
-                    sql = "update MT63 set TinhTrangBG='1' where SoCT='" + drPhieuDeNghi["SoBG"] + "'";
+                    var ngayHH = db.GetValue("select ThoiHan from MT63 where SoCT = '" + sobg + "'");
+                    if (Convert.ToDateTime(ngayHH) < DateTime.Today)
+                    {
+                        XtraMessageBox.Show("Phiếu đề nghị không hợp lệ vì báo giá đã hết hạn!",
+                            Config.GetValue("PackageName").ToString());
+                        _info.Result = false;
+                        return;
+                    }
+
+                    sql = "update MT63 set TinhTrangBG='1' where SoCT='" + sobg + "'";
                     db.UpdateByNonQuery(sql);
                 }
 

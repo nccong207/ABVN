@@ -10,7 +10,7 @@ namespace XuLyNamTC
 {
     public class XuLyNamTC : ICControl
     {
-        DateEdit deNgayCT;
+        DateEdit deNgayCT, deThoiHan;
         
         private DataCustomFormControl _data;
         private InfoCustomControl _info = new InfoCustomControl(IDataType.MasterDetailDt);
@@ -28,6 +28,7 @@ namespace XuLyNamTC
         public void AddEvent()
         {
             deNgayCT = _data.FrmMain.Controls.Find("NgayCT", true)[0] as DateEdit;
+            deThoiHan = _data.FrmMain.Controls.Find("ThoiHan", true)[0] as DateEdit;
             //deNgayCT.EditValue = DateTime.Now;
             _data.FrmMain.Shown += FrmMain_Shown;
             _data.FrmMain.FormClosed += FrmMain_FormClosed;
@@ -72,6 +73,8 @@ namespace XuLyNamTC
                         return;
                     }
                 }
+
+                deThoiHan.EditValue = current.AddDays(60);
 
             }
         }
